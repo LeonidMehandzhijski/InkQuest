@@ -157,7 +157,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                     <p className="text-ink-400 font-ui text-[10px] uppercase tracking-widest">
                       {step === 'email' 
                         ? 'Create an account to keep your discovered tattoos.' 
-                        : `We sent a code to ${email}`}
+                        : `Check your email at ${email}`}
                     </p>
                   </div>
 
@@ -198,7 +198,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                         <input
                           type="text"
                           required
-                          placeholder="6-digit code"
+                          placeholder="6-digit code, if provided"
                           value={otp}
                           onChange={(e) => setOtp(e.target.value)}
                           className="w-full bg-ink-950 border border-ink-700 rounded py-3 px-4 text-center text-xl font-body tracking-widest text-ink-100 placeholder:text-ink-600 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all"
@@ -222,6 +222,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                       >
                         Use a different email
                       </button>
+                      <p className="text-center text-ink-500 font-ui text-[10px] leading-relaxed">
+                        Open the confirmation link if your email contains one. If it contains a 6-digit code instead, enter it above.
+                      </p>
                     </form>
                   )}
                 </>

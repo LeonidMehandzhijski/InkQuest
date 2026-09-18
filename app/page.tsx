@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, MapPin, Scan, Sparkles } from 'lucide-react';
+import { ArrowRight, LockKeyholeOpen, MapPin, Scan } from 'lucide-react';
 import { STUDIO_NAME } from '@/lib/constants';
 
 export default function LandingPage() {
@@ -50,7 +50,7 @@ export default function LandingPage() {
 
           <div className="flex items-start gap-4 p-4 rounded-xl bg-ink-900/50 border border-ink-800 backdrop-blur-sm">
             <div className="mt-1 p-2 bg-ink-950 rounded-full text-gold-500 border border-ink-800">
-              <Sparkles size={20} />
+            <LockKeyholeOpen size={20} />
             </div>
             <div>
               <h3 className="font-display tracking-widest text-lg mb-1">Unlock</h3>
@@ -68,9 +68,6 @@ export default function LandingPage() {
             <span>Start Exploring</span>
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <p className="text-center text-ink-500 font-ui text-[10px] uppercase tracking-widest mt-6">
-            Completely free to play
-          </p>
         </div>
         
       </main>

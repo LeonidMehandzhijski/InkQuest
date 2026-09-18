@@ -27,11 +27,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return;
       }
 
-      const { data: profile } = await supabase
+      let { data: profile } = await supabase
         .from('users')
         .select('role')
         .eq('id', user.id)
         .single();
+
+      // The database trigger normally creates this record. Recover gracefully
+      // for users created before the trigger was installed.
+      if (!profile) {
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert({ id: user.id, email: user.email });
+
+        if (insertError && insertError.code !== '23505') {
+          console.error('Could not create the user profile:', insertError);
+        }
+
+        const result = await supabase
+          .from('users')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+        profile = result.data;
+      }
 
       if (profile?.role === 'admin') {
         setIsAuthorized(true);
