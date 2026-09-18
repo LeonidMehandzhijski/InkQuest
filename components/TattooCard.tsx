@@ -1,9 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { Star, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import type { Tattoo } from '@/types';
-import { RARITY_CONFIG } from '@/lib/constants';
 
 interface TattooCardProps {
   tattoo: Tattoo;
@@ -11,16 +10,14 @@ interface TattooCardProps {
 }
 
 export function TattooCard({ tattoo, isCollected }: TattooCardProps) {
-  const rarityConf = RARITY_CONFIG[tattoo.rarity];
-
   return (
     <div
       className={`relative w-full aspect-[3/4] rounded-xl border-2 overflow-hidden flex flex-col transition-all duration-300 ${
         isCollected ? 'opacity-100' : 'opacity-80 scale-[0.98]'
       }`}
       style={{
-        borderColor: isCollected ? rarityConf.color : '#2e2e2e',
-        boxShadow: isCollected ? `0 4px 20px ${rarityConf.glow}` : 'none',
+        borderColor: isCollected ? '#c9a84c' : '#2e2e2e',
+        boxShadow: isCollected ? '0 4px 20px rgba(201,168,76,0.28)' : 'none',
       }}
     >
       {/* Image / Silhouette */}
@@ -50,23 +47,6 @@ export function TattooCard({ tattoo, isCollected }: TattooCardProps) {
             }}
           >
             <Lock size={32} className="text-ink-600 z-10" />
-          </div>
-        )}
-
-        {/* Rarity badge (only if collected) */}
-        {isCollected && (
-          <div className="absolute top-2 left-2">
-            <span
-              className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-ui uppercase tracking-wider"
-              style={{
-                background: 'rgba(10,10,10,0.85)',
-                border: `1px solid ${rarityConf.color}`,
-                color: rarityConf.color,
-              }}
-            >
-              <Star size={8} fill="currentColor" />
-              {rarityConf.label}
-            </span>
           </div>
         )}
       </div>

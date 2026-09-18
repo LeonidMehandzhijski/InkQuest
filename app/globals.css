@@ -26,11 +26,6 @@
   --color-gold-600: #b8962e;
   --color-gold-700: #9a7d1e;
 
-  /* Rarity colours */
-  --color-rarity-common: #9ca3af;
-  --color-rarity-rare: #60a5fa;
-  --color-rarity-epic: #c084fc;
-
   /* Fonts */
   --font-family-display: var(--font-bebas), 'Impact', sans-serif;
   --font-family-body: var(--font-special), 'Courier New', serif;
@@ -173,4 +168,3 @@ body {
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out both;
 }
-

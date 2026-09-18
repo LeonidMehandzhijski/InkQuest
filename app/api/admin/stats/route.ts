@@ -46,7 +46,7 @@ export async function GET(): Promise<NextResponse<AdminStats | { error: string }
       supabaseAdmin.from('bookings').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
       supabaseAdmin
         .from('bookings')
-        .select('*, tattoo:tattoos(title, rarity), user:users(email)')
+        .select('*, tattoo:tattoos(title), user:users(email)')
         .order('created_at', { ascending: false })
         .limit(10),
     ]);

@@ -45,27 +45,8 @@ export const STUDIO_CONTACTS = {
 export const STUDIO_NAME = 'Tattoo Skin Art';
 export const STUDIO_TAGLINE = 'Ink your story. Find your art.';
 
-/** Rarity colours (for UI badges and glows) */
-export const RARITY_CONFIG = {
-  common: {
-    label: 'Common',
-    color: '#9ca3af',       // gray-400
-    glow: 'rgba(156,163,175,0.4)',
-    bg: 'rgba(156,163,175,0.1)',
-  },
-  rare: {
-    label: 'Rare',
-    color: '#60a5fa',       // blue-400
-    glow: 'rgba(96,165,250,0.4)',
-    bg: 'rgba(96,165,250,0.1)',
-  },
-  epic: {
-    label: 'Epic',
-    color: '#c084fc',       // purple-400
-    glow: 'rgba(192,132,252,0.5)',
-    bg: 'rgba(192,132,252,0.15)',
-  },
-} as const;
+/** Rotated deterministically between search zones; these are not tattoo ranks. */
+export const MAP_ZONE_COLORS = ['#d4a843', '#60a5fa', '#c084fc', '#34d399', '#fb7185'] as const;
 
 /** Gold accent colour used throughout the UI */
 export const GOLD = '#c9a84c';

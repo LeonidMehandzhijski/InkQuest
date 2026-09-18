@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS public.tattoos (
   title               TEXT NOT NULL,
   description         TEXT,
   image_url           TEXT,
-  rarity              TEXT NOT NULL DEFAULT 'common' CHECK (rarity IN ('common', 'rare', 'epic')),
   base_price          NUMERIC(10, 2),
   discount_percentage INTEGER NOT NULL DEFAULT 15 CHECK (discount_percentage BETWEEN 0 AND 100),
   is_active           BOOLEAN NOT NULL DEFAULT TRUE,

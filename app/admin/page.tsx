@@ -96,9 +96,6 @@ export default function AdminDashboardPage() {
                     <td className="p-4">{booking.user?.email || 'Unknown'}</td>
                     <td className="p-4">
                       {booking.tattoo?.title}
-                      <span className="ml-2 text-[10px] uppercase text-ink-500">
-                        ({booking.tattoo?.rarity})
-                      </span>
                     </td>
                     <td className="p-4">
                       <span className={`px-2 py-1 rounded text-[10px] font-ui uppercase tracking-wider ${

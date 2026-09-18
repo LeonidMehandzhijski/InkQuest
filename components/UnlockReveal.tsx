@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { X, Star } from 'lucide-react';
+import { X } from 'lucide-react';
 import type { Tattoo } from '@/types';
-import { RARITY_CONFIG, STUDIO_CONTACTS } from '@/lib/constants';
+import { STUDIO_CONTACTS } from '@/lib/constants';
 
 interface UnlockRevealProps {
   tattoo: Tattoo;
@@ -15,8 +15,6 @@ interface UnlockRevealProps {
 
 export function UnlockReveal({ tattoo, isNew, onClose }: UnlockRevealProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const rarityConf = RARITY_CONFIG[tattoo.rarity];
-
   const whatsappMessage = encodeURIComponent(
     `Hi! I found the InkQuest QR code for "${tattoo.title}" and want to claim my ${tattoo.discount_percentage}% discount. 🖋️`
   );
@@ -82,12 +80,11 @@ export function UnlockReveal({ tattoo, isNew, onClose }: UnlockRevealProps) {
                 <div
                   className="w-full h-full rounded-xl border-2 flex flex-col items-center justify-center p-8 gap-4"
                   style={{
-                    borderColor: rarityConf.color,
-                    background: `radial-gradient(ellipse at center, ${rarityConf.bg} 0%, #0f0f0f 70%)`,
-                    boxShadow: `0 0 40px ${rarityConf.glow}, inset 0 0 60px rgba(0,0,0,0.5)`,
+                    borderColor: '#c9a84c',
+                    background: 'radial-gradient(ellipse at center, rgba(201,168,76,0.15) 0%, #0f0f0f 70%)',
+                    boxShadow: '0 0 40px rgba(201,168,76,0.35), inset 0 0 60px rgba(0,0,0,0.5)',
                   }}
                 >
-                  {/* Animated pulsing rarity badge */}
                   <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
@@ -95,9 +92,9 @@ export function UnlockReveal({ tattoo, isNew, onClose }: UnlockRevealProps) {
                     <div
                       className="w-24 h-24 rounded-full flex items-center justify-center"
                       style={{
-                        border: `3px solid ${rarityConf.color}`,
-                        background: rarityConf.bg,
-                        boxShadow: `0 0 30px ${rarityConf.glow}`,
+                        border: '3px solid #c9a84c',
+                        background: 'rgba(201,168,76,0.1)',
+                        boxShadow: '0 0 30px rgba(201,168,76,0.35)',
                       }}
                     >
                       <span className="text-4xl">🖋️</span>
@@ -105,12 +102,7 @@ export function UnlockReveal({ tattoo, isNew, onClose }: UnlockRevealProps) {
                   </motion.div>
 
                   <div className="text-center">
-                    <p
-                      className="font-ui text-xs uppercase tracking-[0.3em] mb-1"
-                      style={{ color: rarityConf.color }}
-                    >
-                      {rarityConf.label} Find
-                    </p>
+                    <p className="font-ui text-xs uppercase tracking-[0.3em] mb-1 text-gold-500">InkQuest Find</p>
                     <p className="font-display text-3xl text-ink-100 tracking-wider">
                       {isNew ? 'New Tattoo!' : 'Already Found'}
                     </p>
@@ -139,8 +131,8 @@ export function UnlockReveal({ tattoo, isNew, onClose }: UnlockRevealProps) {
                 <div
                   className="w-full h-full rounded-xl border-2 overflow-hidden flex flex-col"
                   style={{
-                    borderColor: rarityConf.color,
-                    boxShadow: `0 0 40px ${rarityConf.glow}`,
+                    borderColor: '#c9a84c',
+                    boxShadow: '0 0 40px rgba(201,168,76,0.35)',
                   }}
                 >
                   {/* Image */}
@@ -158,21 +150,6 @@ export function UnlockReveal({ tattoo, isNew, onClose }: UnlockRevealProps) {
                         <span className="text-6xl opacity-30">🖋️</span>
                       </div>
                     )}
-
-                    {/* Rarity badge overlay */}
-                    <div className="absolute top-3 left-3">
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-ui uppercase tracking-wider"
-                        style={{
-                          background: 'rgba(10,10,10,0.85)',
-                          border: `1px solid ${rarityConf.color}`,
-                          color: rarityConf.color,
-                        }}
-                      >
-                        <Star size={10} fill="currentColor" />
-                        {rarityConf.label}
-                      </span>
-                    </div>
                   </div>
 
                   {/* Info panel */}

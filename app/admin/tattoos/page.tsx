@@ -4,8 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Plus, Edit2, Trash2, Upload, X, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
-import type { Tattoo, Rarity } from '@/types';
-import { RARITY_CONFIG } from '@/lib/constants';
+import type { Tattoo } from '@/types';
 
 export default function AdminTattoosPage() {
   const [tattoos, setTattoos] = useState<Tattoo[]>([]);
@@ -16,7 +15,6 @@ export default function AdminTattoosPage() {
   // Form State
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [rarity, setRarity] = useState<Rarity>('common');
   const [basePrice, setBasePrice] = useState('');
   const [discountPercentage, setDiscountPercentage] = useState('15');
   const [isActive, setIsActive] = useState(true);
@@ -48,7 +46,6 @@ export default function AdminTattoosPage() {
       setEditingId(tattoo.id);
       setTitle(tattoo.title);
       setDescription(tattoo.description || '');
-      setRarity(tattoo.rarity);
       setBasePrice(tattoo.base_price?.toString() || '');
       setDiscountPercentage(tattoo.discount_percentage.toString());
       setIsActive(tattoo.is_active);
@@ -57,7 +54,6 @@ export default function AdminTattoosPage() {
       setEditingId(null);
       setTitle('');
       setDescription('');
-      setRarity('common');
       setBasePrice('');
       setDiscountPercentage('15');
       setIsActive(true);
@@ -94,7 +90,6 @@ export default function AdminTattoosPage() {
     const payload = {
       title,
       description: description || null,
-      rarity,
       base_price: basePrice ? parseFloat(basePrice) : null,
       discount_percentage: parseInt(discountPercentage, 10) || 0,
       is_active: isActive,
@@ -145,11 +140,6 @@ export default function AdminTattoosPage() {
                 <div className="absolute top-2 left-2 px-2 py-1 bg-ink-950/80 border border-ink-700 rounded text-[10px] font-ui uppercase tracking-wider text-gold-500">
                   {tattoo.discount_percentage}% OFF
                 </div>
-                <div className="absolute top-2 right-2">
-                  <span className="px-2 py-1 rounded text-[10px] font-ui uppercase tracking-wider" style={{ background: RARITY_CONFIG[tattoo.rarity].bg, color: RARITY_CONFIG[tattoo.rarity].color, border: `1px solid ${RARITY_CONFIG[tattoo.rarity].color}` }}>
-                    {tattoo.rarity}
-                  </span>
-                </div>
               </div>
               <div className="p-4 flex-1">
                 <h3 className="font-display text-xl text-ink-100 mb-1">{tattoo.title}</h3>
@@ -199,14 +189,6 @@ export default function AdminTattoosPage() {
                       <label className="block text-ink-400 text-[10px] font-ui uppercase tracking-widest mb-1">Base Price (MKD)</label>
                       <input type="number" min="0" value={basePrice} onChange={e => setBasePrice(e.target.value)} className="w-full bg-ink-950 border border-ink-700 rounded p-2 text-sm text-ink-100" />
                     </div>
-                  </div>
-                  <div>
-                    <label className="block text-ink-400 text-[10px] font-ui uppercase tracking-widest mb-1">Rarity</label>
-                    <select value={rarity} onChange={e => setRarity(e.target.value as Rarity)} className="w-full bg-ink-950 border border-ink-700 rounded p-2 text-sm text-ink-100">
-                      <option value="common">Common</option>
-                      <option value="rare">Rare</option>
-                      <option value="epic">Epic</option>
-                    </select>
                   </div>
                   <div className="flex items-center gap-2 pt-2">
                     <input type="checkbox" id="isActive" checked={isActive} onChange={e => setIsActive(e.target.checked)} className="accent-gold-500" />

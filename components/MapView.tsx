@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { MapPin, Navigation } from 'lucide-react';
+import { Navigation } from 'lucide-react';
 import type { Location } from '@/types';
 import {
   MAP_DEFAULT_CENTER,
   MAP_DEFAULT_ZOOM,
   MAP_SEARCH_ZONE_RADIUS_METERS,
-  RARITY_CONFIG,
+  MAP_ZONE_COLORS,
 } from '@/lib/constants';
 
 interface MapViewProps {
@@ -92,20 +92,21 @@ export function MapView({ locations, collectedLocationIds }: MapViewProps) {
         if (!tattoo) return;
 
         const isCollected = collectedLocationIds.includes(loc.id);
-        const rarityConf = RARITY_CONFIG[tattoo.rarity];
+        const zoneColor = getZoneColor(loc.id);
+        const zoneGlow = `${zoneColor}88`;
 
         // --- Search Zone circle ---
         if (!showExactPins) {
           const circle = L.circle([loc.lat, loc.lng], {
             radius: MAP_SEARCH_ZONE_RADIUS_METERS,
-            color: rarityConf.color,
-            fillColor: rarityConf.color,
+            color: zoneColor,
+            fillColor: zoneColor,
             fillOpacity: isCollected ? 0.15 : 0.08,
             weight: isCollected ? 2 : 1,
             dashArray: isCollected ? undefined : '4 4',
           });
 
-          const popupContent = buildPopupHTML(tattoo, loc, isCollected, rarityConf);
+          const popupContent = buildPopupHTML(tattoo, loc, isCollected);
           circle.bindPopup(popupContent, { className: 'inkquest-popup', maxWidth: 260 });
           circle.addTo(map);
         }
@@ -120,11 +121,11 @@ export function MapView({ locations, collectedLocationIds }: MapViewProps) {
             html: `
               <div style="
                 width:32px;height:42px;position:relative;
-                filter: drop-shadow(0 0 6px ${rarityConf.glow});
+                filter: drop-shadow(0 0 6px ${zoneGlow});
               ">
                 <svg viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M16 0C7.163 0 0 7.163 0 16c0 12 16 26 16 26s16-14 16-26C32 7.163 24.837 0 16 0z" 
-                    fill="${rarityConf.color}" fill-opacity="${isCollected ? '0.9' : '0.5'}"/>
+                    fill="${zoneColor}" fill-opacity="${isCollected ? '0.9' : '0.5'}"/>
                   <circle cx="16" cy="16" r="6" fill="#0a0a0a"/>
                 </svg>
               </div>
@@ -132,7 +133,7 @@ export function MapView({ locations, collectedLocationIds }: MapViewProps) {
           });
 
           const marker = L.marker([loc.lat, loc.lng], { icon: svgIcon });
-          const popupContent = buildPopupHTML(tattoo, loc, isCollected, rarityConf);
+          const popupContent = buildPopupHTML(tattoo, loc, isCollected);
           marker.bindPopup(popupContent, { className: 'inkquest-popup', maxWidth: 260 });
           marker.addTo(map);
         }
@@ -166,25 +167,12 @@ export function MapView({ locations, collectedLocationIds }: MapViewProps) {
         </button>
       </div>
 
-      {/* Legend */}
-      <div className="absolute bottom-20 left-4 z-[1000] bg-ink-900/90 border border-ink-700 rounded p-3">
-        <p className="text-[10px] font-ui uppercase tracking-widest text-ink-400 mb-2">Rarity</p>
-        {Object.entries(RARITY_CONFIG).map(([key, conf]) => (
-          <div key={key} className="flex items-center gap-2 mb-1">
-            <div
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: conf.color }}
-            />
-            <span className="text-[10px] font-ui text-ink-300">{conf.label}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function buildPopupHTML(tattoo: any, loc: any, isCollected: boolean, rarityConf: any): string {
+function buildPopupHTML(tattoo: any, loc: any, isCollected: boolean): string {
   const imgSection = isCollected && tattoo.image_url
     ? `<img src="${tattoo.image_url}" alt="${tattoo.title}" style="width:100%;height:80px;object-fit:cover;border-radius:4px;margin-bottom:8px;"/>`
     : `<div style="
@@ -201,13 +189,6 @@ function buildPopupHTML(tattoo: any, loc: any, isCollected: boolean, rarityConf:
       padding:12px;min-width:200px;font-family:sans-serif;
     ">
       ${imgSection}
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="
-          background:${rarityConf.bg};color:${rarityConf.color};
-          border:1px solid ${rarityConf.color}44;border-radius:4px;
-          padding:2px 6px;font-size:9px;text-transform:uppercase;letter-spacing:1px;
-        ">${rarityConf.label}</span>
-      </div>
       <p style="color:#e0e0d8;font-weight:600;font-size:13px;margin:0 0 4px;">
         ${isCollected ? tattoo.title : '???  Unknown Design'}
       </p>
@@ -217,4 +198,9 @@ function buildPopupHTML(tattoo: any, loc: any, isCollected: boolean, rarityConf:
       }
     </div>
   `;
+}
+
+function getZoneColor(locationId: string): string {
+  const hash = Array.from(locationId).reduce((total, character) => ((total * 31) + character.charCodeAt(0)) >>> 0, 0);
+  return MAP_ZONE_COLORS[hash % MAP_ZONE_COLORS.length];
 }

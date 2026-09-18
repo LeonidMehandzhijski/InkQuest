@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Local project notes and one-off diagnostics
+SETUP.md
+test-supabase.js
+
 # vercel
 .vercel
 

@@ -24,7 +24,6 @@ async function main() {
     {
       title: 'Traditional Panther',
       description: 'Classic American traditional panther head.',
-      rarity: 'common',
       discount_percentage: 10,
       base_price: 3500,
       is_active: true,
@@ -33,7 +32,6 @@ async function main() {
     {
       title: 'Neo-Trad Rose',
       description: 'Bold lines and vibrant colors on this neo-traditional rose.',
-      rarity: 'rare',
       discount_percentage: 20,
       base_price: 4500,
       is_active: true,
@@ -41,8 +39,7 @@ async function main() {
     },
     {
       title: 'Japanese Dragon Sleeve',
-      description: 'Epic Japanese style dragon.',
-      rarity: 'epic',
+      description: 'Japanese style dragon design.',
       discount_percentage: 35,
       base_price: 15000,
       is_active: true,

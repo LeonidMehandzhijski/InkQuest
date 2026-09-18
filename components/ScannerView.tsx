@@ -103,7 +103,9 @@ export function ScannerView() {
 
     return () => {
       cancelled = true;
-      void stopScanner();
+      // Do not stop here: changing from "opening" to "scanning" reruns this
+      // effect, and stopping at that point leaves an authorised camera black.
+      // The unmount cleanup and explicit Stop button own stream teardown.
     };
   }, [router, state]);
 

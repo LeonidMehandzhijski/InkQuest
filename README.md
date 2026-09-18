@@ -62,6 +62,7 @@ Run the SQL files in the Supabase SQL Editor, in this order:
 1. `supabase/migrations/001_initial_schema.sql`
 2. `supabase/migrations/002_rls_policies.sql`
 3. `supabase/migrations/003_storage_bucket.sql`
+4. `supabase/migrations/004_remove_tattoo_rarity.sql` (existing projects only)
 
 Optionally load placeholder tattoos and locations:
 

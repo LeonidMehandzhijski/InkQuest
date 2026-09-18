@@ -2,7 +2,6 @@
 // InkQuest - Shared Types
 // ============================================================
 
-export type Rarity = 'common' | 'rare' | 'epic';
 export type UserRole = 'user' | 'admin';
 export type BookingStatus = 'pending' | 'contacted' | 'booked' | 'cancelled';
 
@@ -19,7 +18,6 @@ export interface Tattoo {
   title: string;
   description?: string;
   image_url?: string;
-  rarity: Rarity;
   base_price?: number;
   discount_percentage: number;
   is_active: boolean;
