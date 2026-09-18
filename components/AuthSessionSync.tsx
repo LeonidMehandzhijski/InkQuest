@@ -5,6 +5,7 @@ import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabaseClient';
 import { useStore } from '@/hooks/useStore';
 import type { User } from '@/types';
+import { clearGuestId, getGuestId } from '@/lib/guestId';
 
 async function loadProfile(authUser: SupabaseUser): Promise<User | null> {
   let { data: profile, error } = await supabase
@@ -51,6 +52,7 @@ async function loadProfile(authUser: SupabaseUser): Promise<User | null> {
 
 export function AuthSessionSync() {
   const setUser = useStore((state) => state.setUser);
+  const setGuestId = useStore((state) => state.setGuestId);
 
   useEffect(() => {
     let active = true;
@@ -62,7 +64,30 @@ export function AuthSessionSync() {
       }
 
       const profile = await loadProfile(authUser);
-      if (active && profile) setUser(profile);
+      if (!active || !profile) return;
+
+      setUser(profile);
+
+      // A user may have collected tattoos before signing in. Transfer those
+      // scans only after a real session has been restored from the email link.
+      const guestId = getGuestId();
+      if (!guestId) return;
+
+      try {
+        const response = await fetch('/api/sync-guest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ guest_id: guestId }),
+        });
+
+        if (response.ok && active) {
+          clearGuestId();
+          setGuestId(null);
+        }
+      } catch (error) {
+        // Keep the guest ID so the transfer can be retried on the next visit.
+        console.error('Failed to sync guest scans:', error);
+      }
     };
 
     void supabase.auth.getUser().then(({ data }) => sync(data.user));
@@ -75,7 +100,7 @@ export function AuthSessionSync() {
       active = false;
       listener.subscription.unsubscribe();
     };
-  }, [setUser]);
+  }, [setGuestId, setUser]);
 
   return null;
 }

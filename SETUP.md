@@ -30,14 +30,14 @@ npx tsx supabase/seed.ts
 4. You can now access the Admin portal by visiting `/admin` or navigating via the URL directly.
 
 ## 5. Email sign-in configuration
-InkQuest supports either an email confirmation link or a 6-digit email code, depending on your Supabase email template.
+InkQuest uses Supabase email confirmation links to sign users in and preserve their collections.
 
 1. In Supabase, open **Authentication → URL Configuration**.
 2. Set **Site URL** to your production URL (for example, `https://your-app.vercel.app`), not `http://localhost:3000`.
 3. Add both `https://your-app.vercel.app/auth/callback` and `http://localhost:3000/auth/callback` to **Redirect URLs**.
-4. In **Authentication → Email Templates**, use `{{ .Token }}` in the Magic Link / Confirm signup template to send a 6-digit code. Use `{{ .ConfirmationURL }}` if you prefer a confirmation link instead.
+4. Keep Supabase's default **Confirm signup** and **Magic Link** email templates, which contain `{{ .ConfirmationURL }}`.
 
-The app accepts either flow. A mismatched Site URL or missing Redirect URL causes email links to open localhost.
+A mismatched Site URL or missing Redirect URL causes email links to open localhost. Custom email templates require custom SMTP in Supabase and are not needed for the default InkQuest sign-in flow.
 
 ## 6. Deployment
 When deploying to Vercel, ensure you set the following Environment Variables in the Vercel dashboard:
