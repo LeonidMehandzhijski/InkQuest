@@ -145,27 +145,28 @@ export function ScannerView() {
           </div>
         )}
 
-        {state === 'requesting' && (
-          <div className="w-full max-w-sm text-center">
-            <div id="qr-reader" className="rounded-xl overflow-hidden border border-ink-700 min-h-[280px] bg-ink-900" />
-            <div className="mt-5 flex items-center justify-center gap-3 text-ink-300 font-ui uppercase tracking-widest text-sm">
-              <div className="w-5 h-5 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
-              Opening camera…
-            </div>
-          </div>
-        )}
-
-        {state === 'scanning' && (
+        {(state === 'requesting' || state === 'scanning') && (
           <div className="w-full max-w-sm">
+            {/* This element must remain mounted after permission is granted.
+                Html5Qrcode attaches the video stream directly to it. */}
             <div id="qr-reader" className="rounded-xl overflow-hidden border border-ink-700 min-h-[280px] bg-ink-900" />
-            <p className="text-center text-ink-400 text-xs font-ui uppercase tracking-widest mt-4">Align the QR code in the frame</p>
-            <button
-              id="scanner-stop-btn"
-              onClick={async () => { await stopScanner(); setState('idle'); }}
-              className="mt-4 w-full py-2 border border-ink-600 rounded text-ink-400 text-xs font-ui uppercase tracking-widest hover:border-ink-400 transition-colors"
-            >
-              Stop camera
-            </button>
+            {state === 'requesting' ? (
+              <div className="mt-5 flex items-center justify-center gap-3 text-ink-300 font-ui uppercase tracking-widest text-sm">
+                <div className="w-5 h-5 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
+                Opening camera…
+              </div>
+            ) : (
+              <>
+                <p className="text-center text-ink-400 text-xs font-ui uppercase tracking-widest mt-4">Align the QR code in the frame</p>
+                <button
+                  id="scanner-stop-btn"
+                  onClick={async () => { await stopScanner(); setState('idle'); }}
+                  className="mt-4 w-full py-2 border border-ink-600 rounded text-ink-400 text-xs font-ui uppercase tracking-widest hover:border-ink-400 transition-colors"
+                >
+                  Stop camera
+                </button>
+              </>
+            )}
           </div>
         )}
 
